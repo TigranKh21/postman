@@ -1,0 +1,65 @@
+1. Змінні
+ - глобальні змінні global
+ - змінні оточення environment 
+ - змінні колекції iterationData
+
+    створення:
+    ім'я змінної: base_url
+    значення:  http://localhost:3001
+
+    використання:
+    {{base_url}}/endpoint
+
+    скрін env_var_1.png
+    скрін env_var_2.png
+
+2. Тіло відповіді (вкладка Test)
+    - записати тіло відповіді у змінну jsonData :
+        var jsonData = pm.response.json(); 
+    - записати у змінну token, отриманий у відповіді token:
+        var token = jsonData.token;
+    - записати змінну token в змінні оточення:
+        pm.environment.set('token', token); 
+
+    скрін test_env_var.png
+
+    -snippets
+
+3. Змінні колекції
+    - значення змінної: заголовок із csv-файла
+    - отримати значення змінної із csv-файла:
+        var contact_id = pm.iterationData.get('contact_id')
+
+4. Pre-script
+    - скріпт, що виконується перед запитом, наприклад, логін
+
+    var token = pm.environment.get("token");
+    function login(token){
+        if(token){
+            return
+        }
+        var baseUrl = pm.environment.get("base_url")
+        var mail = pm.environment.get("email")
+        var pass = pm.environment.get("password")
+        var loginURL = baseUrl+'/api/users/login'
+        var myReq = pm.sendRequest({
+            url: loginURL,
+            method: 'POST',
+            header: {
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                email: mail,
+                password: pass
+            })
+        }, function(err, response){
+            if(err){
+                console.log(err);
+            }
+            var token = response.json().token;
+            pm.environment.set('token', token)
+        })
+    }
+login(token) 
+
+    скрін pre-script_env_var.png
