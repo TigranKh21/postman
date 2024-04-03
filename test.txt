@@ -1,5 +1,5 @@
 1. Змінні
- - глобальні змінні global
+ - глобальні змінні globals
  - змінні оточення environment 
  - змінні колекції iterationData
 
@@ -20,6 +20,8 @@
         var token = jsonData.token;
     - записати змінну token в змінні оточення:
         pm.environment.set('token', token); 
+        ...або в гловальні змінні:
+        pm.globals.set('token', token);
 
     скрін test_env_var.png
 
@@ -63,3 +65,5 @@
 login(token) 
 
     скрін pre-script_env_var.png
+
+5. </>
